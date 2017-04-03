@@ -3,6 +3,12 @@
 #----------------------------------------------------------------------------------------------------
 
 
+#----------------------------------------------------------------------------------------------------
+#- run the prepare script, which will copy over new data
+source("R/prepare.R")
+#----------------------------------------------------------------------------------------------------
+
+
 
 #----------------------------------------------------------------------------------------------------
 #- read in the data
@@ -53,6 +59,12 @@ dat3.m$ULR <- with(dat3.m,RGR/LAR)
 
 #- calculate specific leaf area, averaged across interval
 dat3.m$SLA <- rowMeans(dat3.m[,c("LA.init","LA.fina")])/rowMeans(dat3.m[,c("Leafmass.init","Leafmass.fina")])
+
+#- calculate leaf mass fraction, averaged across interval
+dat3.m$LMF <- rowMeans(dat3.m[,c("Leafmass.init","Leafmass.fina")])/rowMeans(dat3.m[,c("Totmass.init","Totmass.fina")])
+
+#- calculate root mass fraction, averaged across interval
+dat3.m$RMF <- rowMeans(dat3.m[,c("Rootmass.init","Rootmass.fina")])/rowMeans(dat3.m[,c("Totmass.init","Totmass.fina")])
 #----------------------------------------------------------------------------------------------------
 
 
@@ -69,6 +81,9 @@ plotBy(ULR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=1
        ylab="ULR (RGR/LAR)")
 plotBy(SLA~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
        ylab="SLA (cm2 mg-1)")
-
+plotBy(LMF~Treatment|Species,data=dat3.m,legendwhere="topleft",type="b",pch=16,
+       ylab="LMF (mg mg-1)")
+plotBy(RMF~Treatment|Species,data=dat3.m,legendwhere="topright",type="b",pch=16,
+       ylab="RMF (mg mg-1)")
 #----------------------------------------------------------------------------------------------------
 
