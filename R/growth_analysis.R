@@ -71,19 +71,24 @@ dat3.m$RMF <- rowMeans(dat3.m[,c("Rootmass.init","Rootmass.fina")])/rowMeans(dat
 
 #----------------------------------------------------------------------------------------------------
 #- a few simple plots
-plotBy(AGR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,ylim=c(-20,250),
-       ylab="AGR (mg day-1)")
+pdf("output/MEGA_growth_analysis_first_look.pdf")
+ptsize <- 1.5
+plotBy(AGR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,ylim=c(-60,250),
+       cex=ptsize,ylab="AGR (mg day-1)")
 plotBy(RGR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
-       ylab="RGR (mg mg-1 day-1)")
+       cex=ptsize,ylab="RGR (mg mg-1 day-1)")
+plotBy(Totmass.fina~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
+       cex=ptsize,ylab="final mass (mg-1)")
 plotBy(LAR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
-       ylab="LAR (cm2 mg-1)")
+       cex=ptsize,ylab="LAR (cm2 mg-1)")
 plotBy(ULR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
-       ylab="ULR (RGR/LAR)")
+       cex=ptsize,ylab="ULR (RGR/LAR)")
 plotBy(SLA~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
-       ylab="SLA (cm2 mg-1)")
+       cex=ptsize,ylab="SLA (cm2 mg-1)")
 plotBy(LMF~Treatment|Species,data=dat3.m,legendwhere="topleft",type="b",pch=16,
-       ylab="LMF (mg mg-1)")
+       cex=ptsize,ylab="LMF (mg mg-1)")
 plotBy(RMF~Treatment|Species,data=dat3.m,legendwhere="topright",type="b",pch=16,
-       ylab="RMF (mg mg-1)")
+       cex=ptsize,ylab="RMF (mg mg-1)")
+dev.off()
 #----------------------------------------------------------------------------------------------------
 

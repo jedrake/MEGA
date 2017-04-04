@@ -20,7 +20,7 @@ files.short <- list.files("W:/WORKING_DATA/GHS39/MEGA/Share/Harvest/",pattern=".
 topath <- paste(getwd(),"/data/harvests/",sep="")
 
 for (i in 1:length(files)){
-  file.copy(from=files[i],to=paste(topath,files.short[i],sep=""))
+  file.copy(from=files[i],to=paste(topath,files.short[i],sep=""),overwrite=T)
 }
 #----------------------------------------------------------------------------------------------------
 
