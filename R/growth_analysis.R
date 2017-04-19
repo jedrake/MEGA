@@ -63,8 +63,15 @@ dat3.m$SLA <- rowMeans(dat3.m[,c("LA.init","LA.fina")])/rowMeans(dat3.m[,c("Leaf
 #- calculate leaf mass fraction, averaged across interval
 dat3.m$LMF <- rowMeans(dat3.m[,c("Leafmass.init","Leafmass.fina")])/rowMeans(dat3.m[,c("Totmass.init","Totmass.fina")])
 
+#- calculate stem mass fraction, averaged across interval
+dat3.m$SMF <- rowMeans(dat3.m[,c("Stemmass.init","Stemmass.fina")])/rowMeans(dat3.m[,c("Totmass.init","Totmass.fina")])
+
 #- calculate root mass fraction, averaged across interval
 dat3.m$RMF <- rowMeans(dat3.m[,c("Rootmass.init","Rootmass.fina")])/rowMeans(dat3.m[,c("Totmass.init","Totmass.fina")])
+
+
+#- sort species by name, relevel factors
+dat3.m$Species <- factor(as.character(dat3.m$Species))
 #----------------------------------------------------------------------------------------------------
 
 
@@ -73,21 +80,41 @@ dat3.m$RMF <- rowMeans(dat3.m[,c("Rootmass.init","Rootmass.fina")])/rowMeans(dat
 #- a few simple plots
 pdf("output/MEGA_growth_analysis_first_look.pdf")
 ptsize <- 1.5
-plotBy(AGR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,ylim=c(-60,250),
-       cex=ptsize,ylab="AGR (mg day-1)")
-plotBy(RGR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
-       cex=ptsize,ylab="RGR (mg mg-1 day-1)")
-plotBy(Totmass.fina~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
+
+
+
+#- define the color palette. note that this is increasingly problematic with lots of species
+nspecies <- length(unique(dat3.m$Species))
+rampcolors <- c("pink","blue","forestgreen","green","yellow","orange","red")
+#creates a scale of colors
+myColorRamp_raw <- function(colors, values) {
+  v <- (values - min(values))/diff(range(values))
+  #v <- (values - 0)/10
+  #v <- values
+  x <- colorRamp(colors)(v)
+  rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+palette(myColorRamp_raw(rampcolors,values=unique(as.numeric(dat3.m$Species))))
+
+par(oma=c(0,0,4,0))
+plotBy(AGR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,ylim=c(-10,250),
+       cex=ptsize,ylab="AGR (mg day-1)",legend=F)
+legend(x=17,y=350,legend=levels(dat3.m$Species),col=palette()[1:nspecies],pch=16,lty=1,ncol=3,xpd=NA,cex=0.8,bty="n")
+plotBy(Totmass.fina~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,legend=F,
        cex=ptsize,ylab="final mass (mg-1)")
-plotBy(LAR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
+plotBy(RGR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,legend=F,
+       cex=ptsize,ylab="RGR (mg mg-1 day-1)")
+plotBy(LAR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,legend=F,
        cex=ptsize,ylab="LAR (cm2 mg-1)")
-plotBy(ULR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
+plotBy(ULR~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,legend=F,
        cex=ptsize,ylab="ULR (RGR/LAR)")
-plotBy(SLA~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,
+plotBy(SLA~Treatment|Species,data=dat3.m,legendwhere="bottomleft",type="b",pch=16,legend=F,
        cex=ptsize,ylab="SLA (cm2 mg-1)")
-plotBy(LMF~Treatment|Species,data=dat3.m,legendwhere="topleft",type="b",pch=16,
+plotBy(LMF~Treatment|Species,data=dat3.m,legendwhere="topleft",type="b",pch=16,legend=F,
        cex=ptsize,ylab="LMF (mg mg-1)")
-plotBy(RMF~Treatment|Species,data=dat3.m,legendwhere="topright",type="b",pch=16,
+plotBy(SMF~Treatment|Species,data=dat3.m,legendwhere="topleft",type="b",pch=16,legend=F,
+       cex=ptsize,ylab="SMF (mg mg-1)")
+plotBy(RMF~Treatment|Species,data=dat3.m,legendwhere="topright",type="b",pch=16,legend=F,
        cex=ptsize,ylab="RMF (mg mg-1)")
 dev.off()
 #----------------------------------------------------------------------------------------------------
