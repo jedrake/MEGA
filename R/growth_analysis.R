@@ -85,7 +85,7 @@ ptsize <- 1.5
 
 #- define the color palette. note that this is increasingly problematic with lots of species
 nspecies <- length(unique(dat3.m$Species))
-rampcolors <- c("pink","blue","forestgreen","green","yellow","orange","red")
+rampcolors <- c("pink","blue","darkgrey","forestgreen","green","yellow","orange","red")
 #creates a scale of colors
 myColorRamp_raw <- function(colors, values) {
   v <- (values - min(values))/diff(range(values))
