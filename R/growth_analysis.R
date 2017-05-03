@@ -15,11 +15,14 @@ source("R/prepare.R")
 files <- list.files("data/harvests/",pattern=".csv",full.names=T)
 
 dat.l <- list()
+names <- list()
 for (i in 1:length(files)){
   dat.l[[i]] <- read.csv(files[i])
   
   #- initial or final
   dat.l[[i]]$Type <- substr(files[i],start=26,stop=29)
+  
+  names[[i]] <- names(dat.l[[i]])
 }
 dat1 <- do.call(rbind,dat.l)
 dat1$Date <- as.Date(dat1$Date,format="%d/%m/%Y")
